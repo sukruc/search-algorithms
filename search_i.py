@@ -41,7 +41,8 @@ class Robot:
         """Search warehouse to find a way to given target position."""
         raise NotImplementedError
 
-    def apply_move(self, square: Tuple[int], move: Tuple[int], warehouse: List[str] = None) -> Tuple[Tuple[int], float]:
+    @staticmethod
+    def apply_move(square: Tuple[int], move: Tuple[int], warehouse: List[str] = None) -> Tuple[Tuple[int], float]:
         """Apply move and return next square on the grid.
 
         If a warehouse list is passed, cost is also calculated and returned,
