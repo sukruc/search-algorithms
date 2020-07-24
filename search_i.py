@@ -126,7 +126,14 @@ class RobotDFS(Robot):
 
 
 if __name__ == '__main__':
-    from test_tracks import warehouse
+    from test_tracks import WAREHOUSES
+    try:
+        track_number = [i for i in sys.argv if i.isnumeric()]
+        track_number = int(track_number[0])
+        WAREHOUSES[track_number]
+    except IndexError:
+        print(f'Enter a warehouse number {list(range(len(WAREHOUSES)))} to run robots.')
+        sys.exit(1)
 
     moves = [
         (-1, 0),  # up
@@ -138,18 +145,20 @@ if __name__ == '__main__':
     robots = [RobotBFS, RobotUCS, RobotAstar, RobotDFS]
 
     print()
-    for row in warehouse:
-        print(row)
     print()
     for cls in robots:
         print('Running', cls.__name__)
         kwargs = {'recursive': True} if cls is RobotDFS and '-r' in sys.argv else {}
         robot = cls(moves, **kwargs)
-        with RecursionLimit(1200):
-            path = robot.find_moves(warehouse)
-        # print(path)
-        print('Total explored:', robot.count_explored)
-        assert check_solution(warehouse, path, print_path='-v' in sys.argv), "Test failed."
-        print()
-        # for p in path:
-        #     print(p)
+
+
+        for warehouse in [WAREHOUSES[track_number]]:
+            with RecursionLimit(1200):
+                path = robot.find_moves(warehouse)
+            print('Total explored:', robot.count_explored)
+            try:
+                assert check_solution(warehouse, path, print_path='-v' in sys.argv), "Test failed."
+            except AssertionError as e:
+                print(e)
+
+            print()
