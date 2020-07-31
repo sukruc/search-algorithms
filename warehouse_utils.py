@@ -83,8 +83,8 @@ def check_solution(warehouse: List[str], moves: List[Tuple[int]], expected_turns
             print('Success')
             warehouse_parsed[k0][k1] = '@'
             print('Total cost:', cost)
-            print('Followed path:')
             if print_path:
+                print('Followed path:')
                 for row in warehouse_parsed:
                     print(''.join(row))
             return True
